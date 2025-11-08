@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { PartiesService } from './parties.service';
-import { PartiesGateway } from './parties.gateway';
+import { PartiesController } from './parties.controller';
 
 @Module({
-  providers: [PartiesGateway, PartiesService],
+  controllers: [PartiesController],
+  providers: [PartiesService],
 })
 export class PartiesModule {}
