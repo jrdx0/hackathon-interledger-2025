@@ -5,11 +5,59 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  username   String  @id @db.VarChar
+  password   String  @db.VarChar
+  url_wallet String? @db.VarChar
+
+  partyUsers    PartyUsers[]   @relation("UserToPartyUsers")
+  usersPayments UsersPayment[] @relation("UserToUsersPayment")
+
+  @@map("users")
+}
+
+model Party {
+  id          String  @id @default(uuid()) @db.Uuid
+  name        String  @db.VarChar
+  quantity    Int?
+  period      String? @db.VarChar
+  description String? @db.Text
+
+  partyUsers    PartyUsers[]   @relation("PartyToPartyUsers")
+  usersPayments UsersPayment[] @relation("PartyToUsersPayment")
+
+  @@map("party")
+}
+
+model PartyUsers {
+  party_id      String @db.Uuid
+  user_username String
+
+  party Party @relation("PartyToPartyUsers", fields: [party_id], references: [id])
+  user  User  @relation("UserToPartyUsers", fields: [user_username], references: [username])
+
+  @@id([party_id, user_username])
+  @@map("party_users")
+}
+
+model UsersPayment {
+  quantity_expected Decimal   @db.Decimal(12, 2)
+  id_party          String    @db.Uuid
+  username          String
+  is_paid           Boolean?
+  period_paid       DateTime?
+  party             Party     @relation("PartyToUsersPayment", fields: [id_party], references: [id])
+  user              User      @relation("UserToUsersPayment", fields: [username], references: [username])
+
+  @@id([id_party, username])
+  @@map("users_payment")
 }
