@@ -9,7 +9,7 @@ services:
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
-      - ${POSTGRES_DATA:-postgres_data}:/var/lib/postgresql/data
+      - ${POSTGRES_DATA:-./postgres_data}:/var/lib/postgresql/data
     networks:
       - app_network
 
