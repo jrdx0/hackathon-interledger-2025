@@ -25,7 +25,6 @@ import { InterledgerService } from './interledger.service';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
-    InterledgerService,
   ],
 })
 export class AppModule {}

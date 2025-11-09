@@ -1,9 +1,10 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 
 import { Public } from './decorators';
 
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { CurrentUser } from './decorators/current-user.decorator';
 
 @Controller()
 export class AuthController {

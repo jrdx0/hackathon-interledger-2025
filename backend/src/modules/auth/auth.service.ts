@@ -1,8 +1,14 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
 import { PrismaService } from 'src/prisma.service';
+import { InterledgerService } from 'src/interledger.service';
 
 import { LoginResponse } from './interface/login-response.interface';
 import { LoginDto } from './dto/login.dto';
@@ -12,6 +18,7 @@ export class AuthService {
   constructor(
     private jwtService: JwtService,
     private prismaService: PrismaService,
+    private interledgerService: InterledgerService,
   ) {}
 
   async login(loginDto: LoginDto): Promise<LoginResponse> {
@@ -31,7 +38,7 @@ export class AuthService {
     });
 
     if (!user || !(await bcrypt.compare(pass, user.password))) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Credenciales invalidas');
     }
   }
 }
