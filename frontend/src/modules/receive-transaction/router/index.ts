@@ -4,6 +4,7 @@ export const receiveTransactionRouter: RouteRecordRaw = {
   path: 'receive-transaction',
   name: 'ReceiveTransactionApp',
   component: () => import('@/layouts/LayoutRouterView.vue'),
+  redirect: { name: 'ReceiveTransaction' },
   children: [
     {
       path: '',

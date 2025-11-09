@@ -1,5 +1,5 @@
 <template>
-  <header class="w-full flex flex-col gap-5 mt-5 mb-2">
+  <header class="w-full flex flex-col gap-5 mt-5">
     <h1 class="text-[10px] text-center font-bold">UNDEFINED - COMMUNITY TECH</h1>
 
     <div class="w-full flex justify-between items-center px-5">

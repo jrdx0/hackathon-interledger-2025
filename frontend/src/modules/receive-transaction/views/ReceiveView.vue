@@ -1,22 +1,24 @@
 <template>
-  <VContent class="px-5">
-    <template #content>
-      <CardReceive
-        v-for="transaction in transactions"
-        :key="transaction.id"
-        :title="transaction.title"
-        :total="transaction.total"
-        :status="transaction.status"
-        :users="transaction.users"
-      />
+  <div class="w-full h-full">
+    <VContent>
+      <template #content>
+        <CardReceive
+          v-for="transaction in transactions"
+          :key="transaction.id"
+          :title="transaction.title"
+          :total="transaction.total"
+          :status="transaction.status"
+          :users="transaction.users"
+        />
 
-      <VButtonFloat
-        text="Crear grupo"
-        icon="mdi:plus"
-        @click="router.push({ name: 'receive-create' })"
-      />
-    </template>
-  </VContent>
+        <VButtonFloat
+          text="Crear grupo"
+          icon="mdi:plus"
+          @click="router.push({ name: 'receive-create' })"
+        />
+      </template>
+    </VContent>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -71,6 +73,54 @@ const transactions = [
   {
     id: 3,
     title: 'Transaction 3',
+    total: 1000,
+    status: 'Per month',
+    users: [
+      {
+        name: 'User 1',
+        amount: 300,
+      },
+      {
+        name: 'User 2',
+        amount: 300,
+      },
+      {
+        name: 'User 3',
+        amount: 400,
+      },
+      {
+        name: 'User 4',
+        amount: 100,
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: 'Transaction 4',
+    total: 1000,
+    status: 'Per month',
+    users: [
+      {
+        name: 'User 1',
+        amount: 300,
+      },
+      {
+        name: 'User 2',
+        amount: 300,
+      },
+      {
+        name: 'User 3',
+        amount: 400,
+      },
+      {
+        name: 'User 4',
+        amount: 100,
+      },
+    ],
+  },
+  {
+    id: 5,
+    title: 'Transaction 5',
     total: 1000,
     status: 'Per month',
     users: [
