@@ -43,7 +43,7 @@ export class PaymentsController {
   }
 
   @Post('continue')
-  continuePayment(@Body() continuePaymentDto: ContinuePaymentDto) {
-    return this.paymentsService.continuePayment(continuePaymentDto);
+  continuePayment(@CurrentUser() currentUser: { username: string }, @Body() continuePaymentDto: ContinuePaymentDto) {
+    return this.paymentsService.continuePayment(currentUser, continuePaymentDto);
   }
 }

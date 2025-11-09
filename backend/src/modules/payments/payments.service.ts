@@ -15,8 +15,15 @@ import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { PaymentDto, ContinuePaymentDto } from './dto/payment.dto';
 import { DefaultArgs } from 'generated/prisma/runtime/library';
 
+export type PaymentCache = {
+  party_id: string;
+  amount: number;
+};
+
 @Injectable()
 export class PaymentsService {
+  private cache = new Map<string, PaymentCache>();
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly interledgerService: InterledgerService,
@@ -39,7 +46,7 @@ export class PaymentsService {
       createPaymentDto.party_id,
     );
 
-    return await this.prisma.$transaction(async (tx) => {
+    const response = await this.prisma.$transaction(async (tx) => {
       const receiverWalletAddressUrl =
         await this.getPaymentReceiverWalletAddressUrl(
           createPaymentDto.party_id,
@@ -57,7 +64,16 @@ export class PaymentsService {
         amount,
       });
 
+      if (!payment.accessToken) {
+        throw new InternalServerErrorException('No se encontro el access token');
+      }
+
       if (payment.status === 'pending') {
+        this.cache.set(payment.accessToken, {
+          party_id: createPaymentDto.party_id,
+          amount,
+        });
+
         return payment;
       }
 
@@ -76,6 +92,8 @@ export class PaymentsService {
 
       return payment;
     });
+
+    return response;
   }
 
   findAll() {
@@ -94,22 +112,32 @@ export class PaymentsService {
     return `This action removes a #${id} payment`;
   }
 
-  async continuePayment(continuePaymentDto: ContinuePaymentDto) {
+  async continuePayment(currentUser: { username: string }, continuePaymentDto: ContinuePaymentDto) {
+    const payment = this.cache.get(continuePaymentDto.access_token);
+
+    if (!payment) {
+      throw new NotFoundException('No se encontro el pago en cache');
+    }
+
     return await this.prisma.$transaction(async (tx) => {
       const result = await this.interledgerService.continueGrant(
         continuePaymentDto.access_token,
       );
 
-      // if (result.status === 'SUCCESS') {
-      //   await tx.usersPayment.create({
-      //     data: {
-      //       // transfered_amount: continuePaymentDto.transfered_amount,
-      //       // quote_amount: continuePaymentDto.quote_amount,
-      //       // party_id: continuePaymentDto.party_id,
-      //       // user_username: continuePaymentDto.user_username,
-      //     },
-      //   });
-      // }
+      if (!result.quote) {
+        throw new InternalServerErrorException('No se encontro el quote');
+      }
+
+      if (result.status === 'success') {
+        await tx.usersPayment.create({
+          data: {
+            party_id: payment.party_id,
+            user_username: currentUser.username,
+            transfered_amount: result.quote.debitAmount.value,
+            quote_amount: result.quote.debitAmount.value,
+          },
+        });
+      }
     })
   }
 

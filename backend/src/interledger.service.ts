@@ -156,8 +156,6 @@ export class InterledgerService implements OnModuleInit {
       },
     );
 
-    console.log(JSON.stringify(quote));
-
     const outgoingPaymentGrant = await this.client.grant.request(
       {
         url: sendingWalletAddress.authServer,
