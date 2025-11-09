@@ -27,16 +27,16 @@ export class PartiesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.partiesService.findOne(+id);
+    return this.partiesService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePartyDto: UpdatePartyDto) {
-    return this.partiesService.update(+id, updatePartyDto);
+    return this.partiesService.update(id, updatePartyDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.partiesService.remove(+id);
+    return this.partiesService.remove(id);
   }
 }
