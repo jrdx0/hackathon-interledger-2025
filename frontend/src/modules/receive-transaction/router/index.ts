@@ -16,5 +16,10 @@ export const receiveTransactionRouter: RouteRecordRaw = {
       name: 'receive-create',
       component: () => import('@/modules/receive-transaction/views/ReceiveCreate.vue'),
     },
+    {
+      path: 'read/:id',
+      name: 'receive-read',
+      component: () => import('@/modules/receive-transaction/views/ReceiveRead.vue'),
+    },
   ],
 }

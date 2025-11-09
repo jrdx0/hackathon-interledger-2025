@@ -13,9 +13,9 @@
     </div>
 
     <div class="flex justify-between">
-      <VSectionButton routerName="ReceiveTransactionApp" text="Recibir" />
+      <VSectionButton routerName="ReceiveTransaction" text="Recibir" />
 
-      <VSectionButton routerName="TransferTransactionApp" text="Transferir" />
+      <VSectionButton routerName="TransferTransaction" text="Transferir" />
     </div>
   </header>
 </template>
