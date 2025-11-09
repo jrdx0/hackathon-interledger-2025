@@ -11,14 +11,15 @@ import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { ContinuePaymentDto, PaymentDto } from './dto/payment.dto';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @Controller('payments')
 export class PaymentsController {
-  constructor(private readonly paymentsService: PaymentsService) {}
+  constructor(private readonly paymentsService: PaymentsService) { }
 
   @Post()
-  create(@Body() createPaymentDto: CreatePaymentDto) {
-    return this.paymentsService.create(createPaymentDto);
+  create(@CurrentUser() currentUser: { username: string }, @Body() createPaymentDto: CreatePaymentDto) {
+    return this.paymentsService.create(currentUser, createPaymentDto);
   }
 
   @Get()
@@ -39,11 +40,6 @@ export class PaymentsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.paymentsService.remove(+id);
-  }
-
-  @Post('exec')
-  payment(@Body() paymentDto: PaymentDto) {
-    return this.paymentsService.payment(paymentDto);
   }
 
   @Post('continue')

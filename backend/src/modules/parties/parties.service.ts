@@ -1,13 +1,14 @@
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+
+import { Prisma } from 'generated/prisma';
+import { PrismaService } from 'src/prisma.service';
+
 import { CreatePartyDto } from './dto/create-party.dto';
 import { UpdatePartyDto } from './dto/update-party.dto';
-import { PrismaService } from 'src/prisma.service';
-import { Prisma } from 'generated/prisma';
 
 @Injectable()
 export class PartiesService {

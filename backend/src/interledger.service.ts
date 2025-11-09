@@ -24,6 +24,19 @@ export type OutgoingPaymentGrantCache = {
   quote: Quote;
 };
 
+export type PaymentParams = {
+  receiverWalletAddressUrl: string;
+  senderWalletAddressUrl: string;
+  amount: number;
+}
+
+export type PaymentResponse = {
+  status: 'pending' | 'success';
+  interactUrl?: string;
+  accessToken?: string;
+  quote?: Quote;
+}
+
 @Injectable()
 export class InterledgerService implements OnModuleInit {
   private outgoingPaymentCache: Map<string, OutgoingPaymentGrantCache> =
@@ -64,15 +77,14 @@ export class InterledgerService implements OnModuleInit {
     });
   }
 
-  async executePayment(
-    receivingWalletAddressUrl: string,
-    sendingWalletAddressUrl: string,
-  ) {
+  async executePayment(params: PaymentParams): Promise<PaymentResponse> {
+    const { receiverWalletAddressUrl, senderWalletAddressUrl, amount } = params;
+
     const sendingWalletAddress = await this.client.walletAddress.get({
-      url: sendingWalletAddressUrl,
+      url: senderWalletAddressUrl,
     });
     const receivingWalletAddress = await this.client.walletAddress.get({
-      url: receivingWalletAddressUrl,
+      url: receiverWalletAddressUrl,
     });
 
     const incomingPaymentGrant = await this.client.grant.request(
@@ -92,7 +104,8 @@ export class InterledgerService implements OnModuleInit {
     );
 
     if (!isFinalizedGrant(incomingPaymentGrant)) {
-      throw new Error('Expected finalized incoming payment grant');
+      console.error('No se pudo obtener el incoming payment grant');
+      throw new InternalServerErrorException('Error al realizar el pago');
     }
 
     const incomingPayment = await this.client.incomingPayment.create(
@@ -105,7 +118,7 @@ export class InterledgerService implements OnModuleInit {
         incomingAmount: {
           assetCode: receivingWalletAddress.assetCode,
           assetScale: receivingWalletAddress.assetScale,
-          value: '1000',
+          value: amount.toString(),
         },
       },
     );
@@ -128,7 +141,7 @@ export class InterledgerService implements OnModuleInit {
 
     if (!isFinalizedGrant(quoteGrant)) {
       console.error('No se pudo obtener el quote');
-      throw new InternalServerErrorException('Error al obtener el quote');
+      throw new InternalServerErrorException('Error al realizar el pago');
     }
 
     const quote = await this.client.quote.create(
@@ -142,6 +155,8 @@ export class InterledgerService implements OnModuleInit {
         method: 'ilp',
       },
     );
+
+    console.log(JSON.stringify(quote));
 
     const outgoingPaymentGrant = await this.client.grant.request(
       {
@@ -198,7 +213,7 @@ export class InterledgerService implements OnModuleInit {
 
   async continueGrant(
     outgoingPaymentGrantOrAccessToken?: OutgoingPaymentGrantCache | string,
-  ) {
+  ): Promise<PaymentResponse> {
     if (!outgoingPaymentGrantOrAccessToken) {
       throw new BadRequestException(
         'No se ha proporcionado un token del pago o la continuación del pago',
@@ -248,7 +263,7 @@ export class InterledgerService implements OnModuleInit {
       throw new InternalServerErrorException();
     }
 
-    const outgoingPayment = await this.client.outgoingPayment.create(
+    await this.client.outgoingPayment.create(
       {
         url: sendingWalletAddress.resourceServer,
         accessToken: finalizedOutgoingPaymentGrant.access_token.value,
@@ -265,6 +280,7 @@ export class InterledgerService implements OnModuleInit {
 
     return {
       status: 'success',
+      quote,
     };
   }
 }

@@ -1,13 +1,13 @@
 import {
   IsOptional,
   IsString,
-  IsInt,
   Min,
   MinLength,
   MaxLength,
-  IsDecimal,
   IsNumber,
+  IsEnum,
 } from 'class-validator';
+import { PaymentPeriod } from 'generated/prisma';
 
 export class CreatePartyDto {
   @IsString({ message: 'El nombre debe ser una cadena de texto' })
@@ -21,9 +21,11 @@ export class CreatePartyDto {
   quantity: number;
 
   @IsOptional()
-  @IsString({ message: 'El periodo debe ser una cadena de texto' })
-  @MaxLength(10, { message: 'El periodo debe tener como máximo 10 caracteres' })
-  period: string;
+  @IsEnum(PaymentPeriod, {
+    message:
+      'El periodo debe ser uno de los siguientes: ANNUAL, MONTHLY, ONE_TIME',
+  })
+  period: PaymentPeriod;
 
   @IsOptional()
   @IsString({ message: 'La descripción debe ser una cadena de texto' })
