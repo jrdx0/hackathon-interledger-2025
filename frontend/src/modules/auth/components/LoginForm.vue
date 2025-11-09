@@ -1,18 +1,8 @@
 <template>
   <form @submit.prevent="onSubmit" class="form">
     <!-- Campos -->
-    <TextInput
-      v-model="email"
-      label="Correo"
-      placeholder="TuCorreo@Gmail.com"
-      type="email"
-    />
-    <TextInput
-      v-model="password"
-      label="Contraseña"
-      placeholder="********"
-      type="password"
-    />
+    <TextInput v-model="email" label="Correo" placeholder="TuCorreo@Gmail.com" type="email" />
+    <TextInput v-model="password" label="Contraseña" placeholder="********" type="password" />
 
     <!-- Botón principal -->
     <PrimaryButton>Iniciar Sesión</PrimaryButton>
@@ -21,24 +11,16 @@
     <SectionDivider label="Continuar con" />
 
     <!-- Botones sociales -->
-    <SocialButton
-      label="Google"
-      variant="google"
-      @click="loginWithGoogle"
-    />
-    <SocialButton
-      label="Facebook"
-      variant="facebook"
-      @click="loginWithFacebook"
-    />
+    <SocialButton label="Google" variant="google" @click="loginWithGoogle" />
+    <SocialButton label="Facebook" variant="facebook" @click="loginWithFacebook" />
 
     <!-- Enlaces inferiores -->
-    <p style="text-align:center; margin-top:10px;">
-      <a href="#" style="color:#555;">¿Olvidaste tu contraseña?</a>
+    <p style="text-align: center; margin-top: 10px">
+      <a href="#" style="color: #555">¿Olvidaste tu contraseña?</a>
     </p>
-    <p style="text-align:center; font-size:14px; color:#666;">
+    <p style="text-align: center; font-size: 14px; color: #666">
       ¿No tienes cuenta?
-      <a href="#" style="color:#059669;">Regístrate</a>
+      <a href="#" style="color: #059669">Regístrate</a>
     </p>
   </form>
 </template>
@@ -49,13 +31,26 @@ import TextInput from './TextInput.vue'
 import PrimaryButton from './PrimaryButton.vue'
 import SectionDivider from './SectionDivider.vue'
 import SocialButton from './SocialButton.vue'
+import { api } from '@/common/api'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const email = ref('')
 const password = ref('')
 
 function onSubmit() {
-  console.log('Correo:', email.value)
-  console.log('Contraseña:', password.value)
+  console.log(email.value, password.value)
+  api
+    .post('/login', {
+      username: 'testuser',
+      password: 'password123',
+    })
+    .then((response) => {
+      console.log(response)
+      localStorage.setItem('SESSION_TOKEN', response.data.token)
+      router.push({ name: 'TransferTransaction' })
+    })
 }
 
 function loginWithGoogle() {
