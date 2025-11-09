@@ -15,7 +15,7 @@ Es la solución ideal para:
 ---
 
 ## 🔗 Links
-* **Presentación:** `https://drive.google.com/drive/folders/1xaLKYsHx2UU2BpVVefzJJ5l139sP3k_L?usp=sharing`
+* **[Presentación](https://drive.google.com/drive/folders/1xaLKYsHx2UU2BpVVefzJJ5l139sP3k_L?usp=sharing)**
 * **Demo del Proyecto:** `...`
 
 
