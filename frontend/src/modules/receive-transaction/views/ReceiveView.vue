@@ -10,7 +10,11 @@
         :users="transaction.users"
       />
 
-      <VButtonFloat text="Crear grupo" icon="mdi:plus" />
+      <VButtonFloat
+        text="Crear grupo"
+        icon="mdi:plus"
+        @click="router.push({ name: 'receive-create' })"
+      />
     </template>
   </VContent>
 </template>
@@ -19,6 +23,9 @@
 import VContent from '@/components/VContent.vue'
 import CardReceive from '@/modules/receive-transaction/components/CardReceive.vue'
 import VButtonFloat from '@/components/VButtonFloat.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const transactions = [
   {
