@@ -1,15 +1,38 @@
 <template>
   <form @submit.prevent="onSubmit" class="form">
-    <TextInput v-model="email" label="Correo" placeholder="TuCorreo@Gmail.com" type="email" />
-    <TextInput v-model="password" label="Contraseña" placeholder="********" type="password" />
+    <!-- Campos -->
+    <TextInput
+      v-model="email"
+      label="Correo"
+      placeholder="TuCorreo@Gmail.com"
+      type="email"
+    />
+    <TextInput
+      v-model="password"
+      label="Contraseña"
+      placeholder="********"
+      type="password"
+    />
 
+    <!-- Botón principal -->
     <PrimaryButton>Iniciar Sesión</PrimaryButton>
 
+    <!-- Separador -->
     <SectionDivider label="Continuar con" />
 
-    <SocialButton label="Google" @click="onSocial('Google')" />
-    <SocialButton label="Facebook" @click="onSocial('Facebook')" />
+    <!-- Botones sociales -->
+    <SocialButton
+      label="Google"
+      variant="google"
+      @click="loginWithGoogle"
+    />
+    <SocialButton
+      label="Facebook"
+      variant="facebook"
+      @click="loginWithFacebook"
+    />
 
+    <!-- Enlaces inferiores -->
     <p style="text-align:center; margin-top:10px;">
       <a href="#" style="color:#555;">¿Olvidaste tu contraseña?</a>
     </p>
@@ -35,8 +58,12 @@ function onSubmit() {
   console.log('Contraseña:', password.value)
 }
 
-function onSocial(provider) {
-  console.log('Login con', provider)
+function loginWithGoogle() {
+  console.log('Login con Google')
+}
+
+function loginWithFacebook() {
+  console.log('Login con Facebook')
 }
 </script>
 
