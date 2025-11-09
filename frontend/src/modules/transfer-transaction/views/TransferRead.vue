@@ -15,10 +15,6 @@
                 <Icon icon="tabler:rotate-clockwise-2" class="text-slate-700" width="40" />
               </div>
             </div>
-
-            <div class="flex justify-center">
-              <VIconButton icon="tabler:moneybag" color="bg-gossamer-500 text-white" text="Pagar" />
-            </div>
           </template>
         </VContent>
       </div>
@@ -35,10 +31,19 @@ import { Icon } from '@iconify/vue'
 import VSidebarBack from '@/components/VSidebarBack.vue'
 import VContent from '@/components/VContent.vue'
 import VIconButton from '@/components/VIconButton.vue'
+import { api } from '@/common/api'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 
 const party = reactive({
   name: 'Spotify Amigos',
   quantity: 304.92,
-  participants: ['Participante 1', 'Participante 2', 'Participante 3'],
 })
+
+function pay() {
+  api.post('/payments', {
+    party_id: route.params.id,
+  })
+}
 </script>

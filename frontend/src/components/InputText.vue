@@ -15,7 +15,7 @@
         'bg-white placeholder:text-gray-500 text-slate-800 border border-gray-200': !disabled,
         'border-none bg-white text-black': disabled,
       }"
-      class="w-full rounded-[6px] py-4 px-3 text-[14px] bg-white placeholder:text-gray-500 text-slate-800 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-rose-800 focus:border-rose-800"
+      class="w-full rounded-[6px] py-4 px-3 text-[14px] bg-white placeholder:text-gray-500 text-slate-800 border border-gray-200"
       :maxlength="limit"
     />
     <slot name="icon"></slot>

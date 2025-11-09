@@ -18,6 +18,11 @@ export const router = createRouter({
     // },
     // App routes
     {
+      path: '/party/invitation/:id',
+      name: 'Invitation',
+      component: () => import('@/components/InvitationParty.vue'),
+    },
+    {
       path: '/',
       name: 'Home',
       component: () => import('@/layouts/LayoutRouterView.vue'),

@@ -27,11 +27,16 @@
                   <p class="text-sm text-slate-700">Participantes</p>
                 </div>
 
-                <Icon icon="tabler:link" class="text-blue-900 cursor-pointer" width="20" />
+                <Icon
+                  icon="tabler:link"
+                  class="text-blue-900 cursor-pointer"
+                  width="20"
+                  @click="openInvitation"
+                />
               </div>
 
               <div class="flex flex-col text-sm text-slate-700">
-                <p v-for="participant in party.participants" :key="participant">
+                <p v-for="participant in party.party_users" :key="participant">
                   @{{ participant }}
                 </p>
               </div>
@@ -52,10 +57,35 @@ import { Icon } from '@iconify/vue'
 import VSidebarBack from '@/components/VSidebarBack.vue'
 import VContent from '@/components/VContent.vue'
 import VIconButton from '@/components/VIconButton.vue'
+import { api } from '@/common/api'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 
 const party = reactive({
-  name: 'Spotify Amigos',
-  quantity: 304.92,
-  participants: ['Participante 1', 'Participante 2', 'Participante 3'],
+  name: '',
+  quantity: 0,
+  period: '',
+  party_users: [],
 })
+
+api.get(`/parties/${route.params.id}`).then((response) => {
+  console.log(response.data)
+  party.name = response.data.name
+  party.quantity = response.data.quantity
+  party.period = response.data.period
+  party.party_users = response.data.party_users
+})
+
+async function openInvitation() {
+  try {
+    // Clipboard API (recomendado)
+    await navigator.clipboard.writeText(
+      `http://localhost:3001/#/party/invitation/${route.params.id}`,
+    )
+    console.log('Copiado ✅')
+  } catch (err) {
+    console.error('Clipboard API error:', err)
+  }
+}
 </script>

@@ -8,11 +8,11 @@
 
     <!-- Totales -->
     <div class="flex justify-between text-sm">
-      <div class="flex items-center gap-0.5">
+      <!-- <div class="flex items-center gap-0.5">
         <Icon icon="tabler:user" width="18" />
         <p>{{ users.length }}</p>
-      </div>
-      <p class="font-bold text-[#3E8762]">{{ formatAmount(total) }}</p>
+      </div> -->
+      <p class="font-bold text-[#3E8762]">{{ formatAmount(Number(total)) }}</p>
     </div>
   </VCard>
 </template>
@@ -26,9 +26,5 @@ defineProps<{
   title: string
   total: number
   status: string
-  users: {
-    name: string
-    amount: number
-  }[]
 }>()
 </script>

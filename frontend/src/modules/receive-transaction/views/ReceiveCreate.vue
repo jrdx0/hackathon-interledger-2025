@@ -31,10 +31,18 @@
 
               <InputOption label="Periodo" v-model="party.period">
                 <template #options>
-                  <option value="PER_MONTH">Mensual</option>
-                  <option value="UNIQUE">Anual</option>
+                  <option value="MONTHLY">Mensual</option>
+                  <option value="ANNUAL">Anual</option>
+                  <option value="ONE_TIME">Unico</option>
                 </template>
               </InputOption>
+
+              <VIconButton
+                icon="tabler:moneybag"
+                color="bg-gossamer-500 text-white"
+                text="Crear Grupo"
+                @click="onSubmit"
+              />
             </VCard>
           </template>
         </VContent>
@@ -51,10 +59,27 @@ import VCard from '@/components/VCard.vue'
 import VContent from '@/components/VContent.vue'
 import InputOption from '@/components/InputOption.vue'
 import VSidebarBack from '@/components/VSidebarBack.vue'
+import VIconButton from '@/components/VIconButton.vue'
+import { api } from '@/common/api'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const party = reactive({
   name: '',
   quantity: 0,
-  period: 'PER_MONTH',
+  period: 'MONTHLY',
 })
+
+function onSubmit() {
+  if (!party.name || !party.quantity || !party.period) {
+    console.log('Faltan datos')
+    return
+  }
+
+  api.post('/parties', party).then((response) => {
+    console.log(response)
+    router.push({ name: 'receive-read', params: { id: response.data.id } })
+  })
+}
 </script>

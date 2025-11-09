@@ -5,10 +5,8 @@
     <div class="w-full flex justify-between items-center px-5">
       <img class="w-[55px]" src="@/assets/Inter_400x400.png" alt="Inter" />
 
-      <div
-        class="w-[45px] h-[45px] flex flex-col items-center justify-center rounded-full bg-emerald-300"
-      >
-        <p>REY</p>
+      <div class="text-sm font-bold">
+        <p>{{ username }}</p>
       </div>
     </div>
 
@@ -22,4 +20,12 @@
 
 <script setup lang="ts">
 import VSectionButton from '@/components/VSectionButton.vue'
+import { api } from '@/common/api'
+import { ref } from 'vue'
+
+const username = ref('')
+
+api.get('/me').then((response) => {
+  username.value = response.data.username
+})
 </script>
