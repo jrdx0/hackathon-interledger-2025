@@ -8,6 +8,7 @@ import { UsersModule } from './modules/users/users.module';
 import { PartiesModule } from './modules/parties/parties.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { SeedModule } from './modules/seed/seed.module';
 import { InterledgerService } from './interledger.service';
 
 @Module({
@@ -19,13 +20,13 @@ import { InterledgerService } from './interledger.service';
     PartiesModule,
     PaymentsModule,
     AuthModule,
+    SeedModule,
   ],
   providers: [
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
-    InterledgerService,
   ],
 })
 export class AppModule {}

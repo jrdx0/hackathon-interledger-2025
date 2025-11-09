@@ -22,7 +22,9 @@ export class CreatePaymentDto {
 
   @IsString({ message: 'user_username debe ser una cadena' })
   @MinLength(3, { message: 'user_username debe tener al menos 3 caracteres' })
-  @MaxLength(20, { message: 'user_username debe tener como máximo 20 caracteres' })
+  @MaxLength(20, {
+    message: 'user_username debe tener como máximo 20 caracteres',
+  })
   user_username: string;
 
   @IsBoolean({ message: 'is_paid debe ser booleano' })
@@ -30,9 +32,8 @@ export class CreatePaymentDto {
   is_paid: boolean;
 
   // Valida formato DD-MM-YYYY (por ejemplo, 08-11-2025)
-  @Matches(
-    /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-[0-9]{4}$/,
-    { message: 'period_paid debe tener el formato DD-MM-YYYY' },
-  )
+  @Matches(/^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-[0-9]{4}$/, {
+    message: 'period_paid debe tener el formato DD-MM-YYYY',
+  })
   period_paid: string;
 }

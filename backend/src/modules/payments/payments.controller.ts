@@ -10,6 +10,7 @@ import {
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
+import { ContinuePaymentDto, PaymentDto } from './dto/payment.dto';
 
 @Controller('payments')
 export class PaymentsController {
@@ -38,5 +39,15 @@ export class PaymentsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.paymentsService.remove(+id);
+  }
+
+  @Post('exec')
+  payment(@Body() paymentDto: PaymentDto) {
+    return this.paymentsService.payment(paymentDto);
+  }
+
+  @Post('continue')
+  continuePayment(@Body() continuePaymentDto: ContinuePaymentDto) {
+    return this.paymentsService.continuePayment(continuePaymentDto);
   }
 }

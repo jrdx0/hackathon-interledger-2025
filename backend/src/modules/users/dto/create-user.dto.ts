@@ -22,9 +22,8 @@ export class CreateUserDto {
 
   @IsString({ message: 'La URL de la billetera debe ser una cadena de texto' })
   @IsUrl(
-    { host_whitelist: ['$ilp.interledger-test.dev'] },
+    { host_whitelist: ['ilp.interledger-test.dev'] },
     { message: 'La URL de la billetera debe ser una URL válida' },
   )
-  @IsOptional()
-  url_wallet?: string;
+  url_wallet: string;
 }

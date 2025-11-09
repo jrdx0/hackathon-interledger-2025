@@ -9,7 +9,6 @@ import {
   IsNumber,
 } from 'class-validator';
 
-
 export class CreatePartyDto {
   @IsString({ message: 'El nombre debe ser una cadena de texto' })
   @MinLength(3, { message: 'El nombre debe tener al menos 3 caracteres' })
@@ -21,7 +20,6 @@ export class CreatePartyDto {
   @Min(0, { message: 'La cantidad no puede ser negativa' })
   quantity: number;
 
-
   @IsOptional()
   @IsString({ message: 'El periodo debe ser una cadena de texto' })
   @MaxLength(10, { message: 'El periodo debe tener como máximo 10 caracteres' })
@@ -29,6 +27,8 @@ export class CreatePartyDto {
 
   @IsOptional()
   @IsString({ message: 'La descripción debe ser una cadena de texto' })
-  @MaxLength(150, { message: 'La descripción debe tener como máximo 150 caracteres' })
+  @MaxLength(150, {
+    message: 'La descripción debe tener como máximo 150 caracteres',
+  })
   description: string;
 }
