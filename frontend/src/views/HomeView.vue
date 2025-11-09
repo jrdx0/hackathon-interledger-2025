@@ -1,8 +1,8 @@
 <template>
-  <div class="screen bg-blue-700 overflow-hidden">
+  <div class="screen overflow-hidden">
     <VSidebar />
 
-    <div class="content" :class="navigatorStore.active ? 'screen-active' : ''">
+    <div class="content bg-[#E3E3E3]" :class="navigatorStore.active ? 'screen-active' : ''">
       <RouterView />
     </div>
   </div>
@@ -19,7 +19,6 @@ const navigatorStore = useNavigatorStore()
 .screen {
   width: 100%;
   height: 100svh;
-  background-color: #f0f0f0;
 }
 
 .content {
