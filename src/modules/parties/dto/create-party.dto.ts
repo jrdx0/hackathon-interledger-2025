@@ -5,6 +5,8 @@ import {
   Min,
   MinLength,
   MaxLength,
+  IsDecimal,
+  IsNumber,
 } from 'class-validator';
 
 
@@ -15,17 +17,18 @@ export class CreatePartyDto {
   name: string;
 
   @IsOptional()
-  @IsInt({ message: 'La cantidad debe ser un número entero' })
+  @IsNumber({}, { message: 'La cantidad debe ser un número' })
   @Min(0, { message: 'La cantidad no puede ser negativa' })
-  quantity?: number;
+  quantity: number;
+
 
   @IsOptional()
   @IsString({ message: 'El periodo debe ser una cadena de texto' })
   @MaxLength(10, { message: 'El periodo debe tener como máximo 10 caracteres' })
-  period?: string;
+  period: string;
 
   @IsOptional()
   @IsString({ message: 'La descripción debe ser una cadena de texto' })
   @MaxLength(150, { message: 'La descripción debe tener como máximo 150 caracteres' })
-  description?: string;
+  description: string;
 }
