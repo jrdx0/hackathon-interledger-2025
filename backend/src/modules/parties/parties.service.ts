@@ -12,7 +12,7 @@ import { UpdatePartyDto } from './dto/update-party.dto';
 
 @Injectable()
 export class PartiesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   create(currentUser: { username: string }, createPartyDto: CreatePartyDto) {
     return this.prisma.party.create({
@@ -52,12 +52,8 @@ export class PartiesService {
       },
     });
 
-    if (!parties) {
-      throw new NotFoundException(`Parties no encontradas`);
-    }
-
-    if (parties.length === 0) {
-      throw new NotFoundException(`Parties no encontradas`);
+    if (!parties || parties.length === 0) {
+      return [];
     }
 
     return parties.map((party) => {
@@ -97,12 +93,8 @@ export class PartiesService {
       },
     });
 
-    if (!parties) {
-      throw new NotFoundException(`Parties no encontradas`);
-    }
-
-    if (parties.length === 0) {
-      throw new NotFoundException(`Parties no encontradas`);
+    if (!parties || parties.length === 0) {
+      return []
     }
 
     return parties.map((party) => {
