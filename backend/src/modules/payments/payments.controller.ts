@@ -15,10 +15,13 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @Controller('payments')
 export class PaymentsController {
-  constructor(private readonly paymentsService: PaymentsService) { }
+  constructor(private readonly paymentsService: PaymentsService) {}
 
   @Post()
-  create(@CurrentUser() currentUser: { username: string }, @Body() createPaymentDto: CreatePaymentDto) {
+  create(
+    @CurrentUser() currentUser: { username: string },
+    @Body() createPaymentDto: CreatePaymentDto,
+  ) {
     return this.paymentsService.create(currentUser, createPaymentDto);
   }
 
@@ -43,7 +46,13 @@ export class PaymentsController {
   }
 
   @Post('continue')
-  continuePayment(@CurrentUser() currentUser: { username: string }, @Body() continuePaymentDto: ContinuePaymentDto) {
-    return this.paymentsService.continuePayment(currentUser, continuePaymentDto);
+  continuePayment(
+    @CurrentUser() currentUser: { username: string },
+    @Body() continuePaymentDto: ContinuePaymentDto,
+  ) {
+    return this.paymentsService.continuePayment(
+      currentUser,
+      continuePaymentDto,
+    );
   }
 }

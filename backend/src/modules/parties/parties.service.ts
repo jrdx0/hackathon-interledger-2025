@@ -20,10 +20,109 @@ export class PartiesService {
     });
   }
 
+  /**
+   * Find all parties
+   *
+   * @returns The parties
+   */
   findAll() {
     return this.prisma.party.findMany();
   }
 
+  /**
+   * Find all parties that the current user created
+   *
+   * @param currentUser - The current user
+   *
+   * @returns The parties
+   */
+  async findAllReceive(currentUser: { username: string }) {
+    const parties = await this.prisma.party.findMany({
+      where: {
+        created_by_id: currentUser.username,
+      },
+      include: {
+        party_users: {
+          include: {
+            user: {
+              omit: { password: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!parties) {
+      throw new NotFoundException(`Parties no encontradas`);
+    }
+
+    if (parties.length === 0) {
+      throw new NotFoundException(`Parties no encontradas`);
+    }
+
+    return parties.map((party) => {
+      const { party_users, ...rest } = party;
+
+      return {
+        ...rest,
+        users: party_users.map((party_user) => party_user.user),
+      };
+    });
+  }
+
+  /**
+   * Find all parties that the current user is a member of
+   *
+   * @param currentUser - The current user
+   *
+   * @returns The parties
+   */
+  async findAllSend(currentUser: { username: string }) {
+    const parties = await this.prisma.party.findMany({
+      where: {
+        party_users: {
+          some: {
+            user_username: currentUser.username,
+          },
+        },
+      },
+      include: {
+        party_users: {
+          include: {
+            user: {
+              omit: { password: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!parties) {
+      throw new NotFoundException(`Parties no encontradas`);
+    }
+
+    if (parties.length === 0) {
+      throw new NotFoundException(`Parties no encontradas`);
+    }
+
+    return parties.map((party) => {
+      const { party_users, ...rest } = party;
+
+      return {
+        ...rest,
+        users: party_users.map((party_user) => party_user.user),
+      };
+    });
+  }
+
+  /**
+   * Find a party by id
+   *
+   * @param currentUser - The current user
+   * @param id - The party id
+   *
+   * @returns The party
+   */
   async findOne(currentUser: { username: string }, id: string) {
     const party = await this.prisma.party.findUnique({
       where: { id },

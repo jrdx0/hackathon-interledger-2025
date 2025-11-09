@@ -27,24 +27,25 @@ export class PaymentsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly interledgerService: InterledgerService,
-  ) { }
+  ) {}
 
   /**
    * Create a payment
-   * 
+   *
    * @param createPaymentDto - The create payment dto
-   * 
+   *
    * @returns The payment
    */
-  async create(currentUser: { username: string }, createPaymentDto: CreatePaymentDto) {
+  async create(
+    currentUser: { username: string },
+    createPaymentDto: CreatePaymentDto,
+  ) {
     await this.validateLastPaymentPeriod(
       createPaymentDto.party_id,
       currentUser.username,
     );
 
-    const amount = await this.getUserDebitAmount(
-      createPaymentDto.party_id,
-    );
+    const amount = await this.getUserDebitAmount(createPaymentDto.party_id);
 
     const response = await this.prisma.$transaction(async (tx) => {
       const receiverWalletAddressUrl =
@@ -65,7 +66,9 @@ export class PaymentsService {
       });
 
       if (!payment.accessToken) {
-        throw new InternalServerErrorException('No se encontro el access token');
+        throw new InternalServerErrorException(
+          'No se encontro el access token',
+        );
       }
 
       if (payment.status === 'pending') {
@@ -112,7 +115,10 @@ export class PaymentsService {
     return `This action removes a #${id} payment`;
   }
 
-  async continuePayment(currentUser: { username: string }, continuePaymentDto: ContinuePaymentDto) {
+  async continuePayment(
+    currentUser: { username: string },
+    continuePaymentDto: ContinuePaymentDto,
+  ) {
     const payment = this.cache.get(continuePaymentDto.access_token);
 
     if (!payment) {
@@ -138,15 +144,15 @@ export class PaymentsService {
           },
         });
       }
-    })
+    });
   }
 
   /**
    * Get the receiver wallet address url
-   * 
+   *
    * @param party_id - The party id
    * @param prismaClient - The prisma client
-   * 
+   *
    * @returns The receiver wallet address url
    */
   async getPaymentReceiverWalletAddressUrl(
@@ -154,9 +160,9 @@ export class PaymentsService {
     prismaClient:
       | PrismaService
       | Omit<
-        PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
-        '$connect' | '$disconnect' | '$on' | '$transaction' | '$extends'
-      > = this.prisma,
+          PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+          '$connect' | '$disconnect' | '$on' | '$transaction' | '$extends'
+        > = this.prisma,
   ): Promise<string> {
     const party = await prismaClient.party.findUnique({
       where: {
@@ -189,10 +195,10 @@ export class PaymentsService {
 
   /**
    * Get the sender wallet address url
-   * 
+   *
    * @param currentUser - The current user
    * @param prismaClient - The prisma client
-   * 
+   *
    * @returns The sender wallet address url
    */
   async getPaymentSenderWalletAddressUrl(
@@ -200,9 +206,9 @@ export class PaymentsService {
     prismaClient:
       | PrismaService
       | Omit<
-        PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
-        '$connect' | '$disconnect' | '$on' | '$transaction' | '$extends'
-      > = this.prisma,
+          PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+          '$connect' | '$disconnect' | '$on' | '$transaction' | '$extends'
+        > = this.prisma,
   ): Promise<string> {
     const user = await prismaClient.user.findUnique({
       where: {
@@ -222,10 +228,10 @@ export class PaymentsService {
 
   /**
    * Validate the last payment period
-   * 
+   *
    * @param party_id - The party id
    * @param user_username - The user username
-   * 
+   *
    * @returns void
    */
   async validateLastPaymentPeriod(
@@ -307,14 +313,12 @@ export class PaymentsService {
 
   /**
    * Get the user debit amount
-   * 
+   *
    * @param party_id - The party id
-   * 
+   *
    * @returns The user debit amount
    */
-  async getUserDebitAmount(
-    party_id: string,
-  ): Promise<number> {
+  async getUserDebitAmount(party_id: string): Promise<number> {
     const party = await this.prisma.party.findUnique({
       where: {
         id: party_id,
@@ -338,6 +342,6 @@ export class PaymentsService {
       throw new NotFoundException('No se encontro la party');
     }
 
-    return (party.quantity.toNumber() / (usersOnParty + 1));
+    return party.quantity.toNumber() / (usersOnParty + 1);
   }
 }

@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  BadRequestException,
+  Query,
 } from '@nestjs/common';
 
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
@@ -27,8 +29,17 @@ export class PartiesController {
   }
 
   @Get()
-  findAll() {
-    return this.partiesService.findAll();
+  findAll(
+    @CurrentUser() currentUser: { username: string },
+    @Query('type') type: 'receive' | 'send',
+  ) {
+    if (type === 'receive') {
+      return this.partiesService.findAllReceive(currentUser);
+    } else if (type === 'send') {
+      return this.partiesService.findAllSend(currentUser);
+    }
+
+    throw new BadRequestException('Invalid type');
   }
 
   @Get(':id')

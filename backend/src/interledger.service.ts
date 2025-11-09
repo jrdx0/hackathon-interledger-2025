@@ -28,14 +28,14 @@ export type PaymentParams = {
   receiverWalletAddressUrl: string;
   senderWalletAddressUrl: string;
   amount: number;
-}
+};
 
 export type PaymentResponse = {
   status: 'pending' | 'success';
   interactUrl?: string;
   accessToken?: string;
   quote?: Quote;
-}
+};
 
 @Injectable()
 export class InterledgerService implements OnModuleInit {
