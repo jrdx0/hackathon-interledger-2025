@@ -2,7 +2,7 @@
   <button
     class="social-btn"
     :class="`social-btn--${variant}`"
-    @click="$emit('click', props)"
+    @click="$emit('click')"
     type="button"
   >
     <Icon
