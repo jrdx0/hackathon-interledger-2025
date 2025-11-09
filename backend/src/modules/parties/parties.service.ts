@@ -12,7 +12,7 @@ import { UpdatePartyDto } from './dto/update-party.dto';
 
 @Injectable()
 export class PartiesService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   create(currentUser: { username: string }, createPartyDto: CreatePartyDto) {
     return this.prisma.party.create({
@@ -94,14 +94,15 @@ export class PartiesService {
     });
 
     if (!parties || parties.length === 0) {
-      return []
+      return [];
     }
 
     return parties.map((party) => {
-      const { party_users, ...rest } = party;
+      const { party_users, quantity, ...rest } = party;
 
       return {
         ...rest,
+        quantity: quantity.toNumber() / (party_users.length + 1),
         users: party_users.map((party_user) => party_user.user),
       };
     });

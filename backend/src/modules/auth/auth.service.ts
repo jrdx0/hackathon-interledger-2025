@@ -41,4 +41,11 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales invalidas');
     }
   }
+
+  async me(currentUser: { username: string }) {
+    return this.prismaService.user.findUnique({
+      where: { username: currentUser.username },
+      omit: { password: true },
+    });
+  }
 }
