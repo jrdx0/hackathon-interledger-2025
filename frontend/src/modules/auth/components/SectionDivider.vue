@@ -12,7 +12,7 @@ defineProps<{ label: string }>()
 .divider {
   display: flex;
   align-items: center;
-  color: #888;
+  color: #8075b4;
   font-size: 13px;
   margin: 12px 0;
 }
@@ -21,7 +21,7 @@ defineProps<{ label: string }>()
   content: "";
   flex: 1;
   height: 1px;
-  background: #ccc;
+  background: #8075b4;
   margin: 0 8px;
 }
 </style>
