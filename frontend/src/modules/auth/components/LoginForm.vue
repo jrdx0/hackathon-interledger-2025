@@ -1,18 +1,11 @@
 <template>
   <form @submit.prevent="onSubmit" class="form">
     <!-- Campos -->
-    <TextInput v-model="email" label="Correo" placeholder="TuCorreo@Gmail.com" type="string" />
+    <TextInput v-model="email" label="Correo" placeholder="username" type="string" />
     <TextInput v-model="password" label="Contraseña" placeholder="********" type="password" />
 
     <!-- Botón principal -->
     <PrimaryButton>Iniciar Sesión</PrimaryButton>
-
-    <!-- Separador -->
-    <SectionDivider label="Continuar con" />
-
-    <!-- Botones sociales -->
-    <SocialButton label="Google" variant="google" @click="loginWithGoogle" />
-    <SocialButton label="Facebook" variant="facebook" @click="loginWithFacebook" />
 
     <!-- Enlaces inferiores -->
     <p style="text-align: center; margin-top: 10px">
@@ -29,8 +22,6 @@
 import { ref } from 'vue'
 import TextInput from './TextInput.vue'
 import PrimaryButton from './PrimaryButton.vue'
-import SectionDivider from './SectionDivider.vue'
-import SocialButton from './SocialButton.vue'
 import { api } from '@/common/api'
 import { useRouter } from 'vue-router'
 
@@ -43,8 +34,8 @@ function onSubmit() {
   console.log(email.value, password.value)
   api
     .post('/login', {
-      username: 'testuser',
-      password: 'password123',
+      username: email.value,
+      password: password.value,
     })
     .then((response) => {
       console.log(response)
