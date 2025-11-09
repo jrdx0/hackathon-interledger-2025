@@ -7,20 +7,24 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto {
-  @IsString({ message: 'Username must be a string' })
-  @MaxLength(20, { message: 'Username must be at most 20 characters' })
-  @MinLength(3, { message: 'Username must be at least 3 characters' })
+  @IsString({ message: 'El nombre de usuario debe ser una cadena de texto' })
+  @MaxLength(20, {
+    message: 'El nombre de usuario debe tener como máximo 20 caracteres',
+  })
+  @MinLength(3, {
+    message: 'El nombre de usuario debe tener al menos 3 caracteres',
+  })
   username: string;
 
-  @IsString({ message: 'Password must be a string' })
-  @MinLength(8, { message: 'Password must be at least 8 characters' })
+  @IsString({ message: 'La contraseña debe ser una cadena de texto' })
+  @MinLength(8, { message: 'La contraseña debe tener al menos 8 caracteres' })
   password: string;
 
-  @IsString({ message: 'Wallet URL must be a string' })
+  @IsString({ message: 'La URL de la billetera debe ser una cadena de texto' })
   @IsUrl(
-    { host_whitelist: ['wallet.interledger-test.dev'] },
-    { message: 'Wallet URL must be a valid URL' },
+    { host_whitelist: ['$ilp.interledger-test.dev'] },
+    { message: 'La URL de la billetera debe ser una URL válida' },
   )
   @IsOptional()
-  walletUrl?: string;
+  url_wallet?: string;
 }
