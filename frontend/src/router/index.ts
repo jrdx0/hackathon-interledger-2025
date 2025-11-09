@@ -20,7 +20,7 @@ export const router = createRouter({
     {
       path: '/',
       name: 'Home',
-      component: () => import('@/views/HomeView.vue'),
+      component: () => import('@/layouts/LayoutRouterView.vue'),
       redirect: { name: 'ReceiveTransactionApp' },
       children: [receiveTransactionRouter, transferTransactionRouter],
     },
