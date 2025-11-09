@@ -7,6 +7,9 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+
 import { PartiesService } from './parties.service';
 import { CreatePartyDto } from './dto/create-party.dto';
 import { UpdatePartyDto } from './dto/update-party.dto';
@@ -16,8 +19,11 @@ export class PartiesController {
   constructor(private readonly partiesService: PartiesService) {}
 
   @Post()
-  create(@Body() createPartyDto: CreatePartyDto) {
-    return this.partiesService.create(createPartyDto);
+  create(
+    @CurrentUser() currentUser: { username: string },
+    @Body() createPartyDto: CreatePartyDto,
+  ) {
+    return this.partiesService.create(currentUser, createPartyDto);
   }
 
   @Get()
@@ -26,8 +32,11 @@ export class PartiesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.partiesService.findOne(id);
+  findOne(
+    @CurrentUser() currentUser: { username: string },
+    @Param('id') id: string,
+  ) {
+    return this.partiesService.findOne(currentUser, id);
   }
 
   @Patch(':id')
@@ -36,7 +45,42 @@ export class PartiesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.partiesService.remove(id);
+  remove(
+    @CurrentUser() currentUser: { username: string },
+    @Param('id') id: string,
+  ) {
+    return this.partiesService.remove(currentUser, id);
+  }
+
+  @Patch('lock-access/:id')
+  lockAccess(@Param('id') id: string) {
+    return this.partiesService.lockAccess(id);
+  }
+
+  @Patch('unlock-access/:id')
+  unlockAccess(@Param('id') id: string) {
+    return this.partiesService.unlockAccess(id);
+  }
+
+  @Patch('remove-user/:id')
+  removeUser(
+    @CurrentUser() currentUser: { username: string },
+    @Param('id') id: string,
+    @Body() body: { username: string },
+  ) {
+    return this.partiesService.removeUser(currentUser, id, body.username);
+  }
+}
+
+@Controller('party/invitation')
+export class PartyInvitationController {
+  constructor(private readonly partiesService: PartiesService) {}
+
+  @Get(':partyId')
+  acceptInvitation(
+    @CurrentUser() currentUser: { username: string },
+    @Param('partyId') partyId: string,
+  ) {
+    return this.partiesService.acceptInvitation(currentUser, partyId);
   }
 }
