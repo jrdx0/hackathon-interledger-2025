@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-gossamer-50: #f2fbf8;
+  --color-gossamer-100: #d4f3ea;
+  --color-gossamer-200: #a8e7d5;
+  --color-gossamer-300: #75d3bb;
+  --color-gossamer-400: #48b9a1;
+  --color-gossamer-500: #2e9b85;
+  --color-gossamer-600: #237e6e;
+  --color-gossamer-700: #20655a;
+  --color-gossamer-800: #1e5149;
+  --color-gossamer-900: #1d443e;
+  --color-gossamer-950: #0b2824;
+
+  --color-dodger-blue-50: #edfbff;
+  --color-dodger-blue-100: #d8f5ff;
+  --color-dodger-blue-200: #b9edff;
+  --color-dodger-blue-300: #89e4ff;
+  --color-dodger-blue-400: #51d2ff;
+  --color-dodger-blue-500: #29b8ff;
+  --color-dodger-blue-600: #129cfe;
+  --color-dodger-blue-700: #0e89f4;
+  --color-dodger-blue-800: #1067bd;
+  --color-dodger-blue-900: #135895;
+  --color-dodger-blue-950: #11365a;
+}
