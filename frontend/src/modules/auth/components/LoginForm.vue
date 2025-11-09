@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="onSubmit" class="form">
     <!-- Campos -->
-    <TextInput v-model="email" label="Correo" placeholder="TuCorreo@Gmail.com" type="email" />
+    <TextInput v-model="email" label="Correo" placeholder="TuCorreo@Gmail.com" type="string" />
     <TextInput v-model="password" label="Contraseña" placeholder="********" type="password" />
 
     <!-- Botón principal -->
