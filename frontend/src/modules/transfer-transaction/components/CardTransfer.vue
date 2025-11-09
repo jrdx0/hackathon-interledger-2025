@@ -1,7 +1,6 @@
 <template>
   <VCard
     class="w-full cursor-pointer select-none transition-all duration-200 hover:shadow-sm"
-    @click="toggleUsers"
   >
     <!-- Header -->
     <div class="flex items-center justify-between">
@@ -17,7 +16,7 @@
     <!-- Totales -->
     <div class="mt-1">
       <div class="flex justify-between text-sm">
-        <p class="text-gray-600">Total</p>
+        <p class="text-gray-600">Total a pagar</p>
         <p class="font-semibold">{{ formatAmount(total) }}</p>
       </div>
       <div class="flex justify-between text-sm">
@@ -25,41 +24,13 @@
         <p class="font-semibold">{{ users.length }}</p>
       </div>
     </div>
-
-    <transition name="accordion">
-      <div v-if="showUsers" class="overflow-hidden">
-        <hr class="my-2 border-gray-200" />
-
-        <ul class="text-sm text-gray-700">
-          <li
-            v-for="user in users"
-            :key="user.name"
-            class="flex justify-between items-center py-0.5"
-          >
-            <span>{{ user.name }}</span>
-            <span class="font-semibold">{{ formatAmount(user.amount) }}</span>
-          </li>
-        </ul>
-
-        <div class="flex justify-center items-center gap-5">
-          <p class="text-sm text-gray-600 cursor-pointer underline p-2 border border-gray-200">
-            Compartir
-          </p>
-
-          <Icon icon="material-symbols:lock" size="24" />
-          <Icon icon="material-symbols:lock-open" size="24" />
-        </div>
-      </div>
-    </transition>
   </VCard>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { formatAmount } from '@/herlper/formatAmount'
 import VCard from '@/components/VCard.vue'
 import VBadge from '@/components/VBadge.vue'
-import { Icon } from '@iconify/vue'
 
 defineProps<{
   title: string
@@ -70,11 +41,6 @@ defineProps<{
     amount: number
   }[]
 }>()
-
-const showUsers = ref(false)
-const toggleUsers = () => {
-  showUsers.value = !showUsers.value
-}
 </script>
 
 <style scoped>

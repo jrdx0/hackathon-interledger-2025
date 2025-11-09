@@ -1,7 +1,48 @@
 <template>
-  <VContent class="px-5">
-    <template #content>
-      <p>Crear Grupo</p>
-    </template>
-  </VContent>
+  <div class="w-full h-full">
+    <VContent>
+      <template #content>
+        <VCard>
+          <InputText
+            id="name"
+            v-model="party.name"
+            label="Nombre"
+            placeholder="Nombre"
+            type="text"
+            required
+          />
+
+          <InputText
+            id="quantity"
+            v-model="party.quantity"
+            label="Cantidad"
+            placeholder="Cantidad"
+            type="number"
+            required
+          />
+
+          <InputOption label="Periodo" v-model="party.period">
+            <template #options>
+              <option value="PER_MONTH">Mensual</option>
+              <option value="UNIQUE">Anual</option>
+            </template>
+          </InputOption>
+        </VCard>
+      </template>
+    </VContent>
+  </div>
 </template>
+
+<script setup lang="ts">
+import InputText from '@/components/InputText.vue'
+import VCard from '@/components/VCard.vue'
+import VContent from '@/components/VContent.vue'
+import InputOption from '@/components/InputOption.vue'
+import { reactive } from 'vue'
+
+const party = reactive({
+  name: '',
+  quantity: 0,
+  period: 'PER_MONTH',
+})
+</script>

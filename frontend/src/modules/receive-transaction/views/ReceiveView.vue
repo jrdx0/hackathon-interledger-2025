@@ -27,6 +27,7 @@ import CardReceive from '@/modules/receive-transaction/components/CardReceive.vu
 import VButtonFloat from '@/components/VButtonFloat.vue'
 import { useRouter } from 'vue-router'
 
+
 const router = useRouter()
 
 const transactions = [
