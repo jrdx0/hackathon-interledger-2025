@@ -15,4 +15,9 @@ export class AuthController {
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
+
+  @Get('me')
+  me(@CurrentUser() currentUser: { username: string }) {
+    return this.authService.me(currentUser);
+  }
 }
