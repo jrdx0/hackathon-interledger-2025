@@ -1,6 +1,6 @@
 <template>
   <VCard
-    class="cursor-pointer select-none transition-all duration-200 hover:shadow-sm"
+    class="w cursor-pointer select-none transition-all duration-200 hover:shadow-sm"
     @click="toggleUsers"
   >
     <!-- Header -->
