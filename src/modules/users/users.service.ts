@@ -83,15 +83,7 @@ export class UsersService {
     username: string,
     updateUserDto: UpdateUserDto,
   ): Promise<UserWithoutPass> {
-    console.log(JSON.stringify(updateUserDto, null, 2));
-
-    const user = await this.findOne(username);
-
-    if (!user) {
-      throw new NotFoundException(
-        `Usuario con nombre de usuario ${username} no encontrado`,
-      );
-    }
+    await this.throwIfNotExists(username);
 
     return this.prisma.user.update({
       where: { username },
@@ -107,11 +99,33 @@ export class UsersService {
    *
    * @returns The removed user
    */
-  remove(username: string): Promise<UserWithoutPass> {
+  async remove(username: string): Promise<UserWithoutPass> {
+    await this.throwIfNotExists(username);
+
     return this.prisma.user.delete({
       where: { username },
       omit: { password: true },
     });
+  }
+
+  /**
+   * Throw an error if the user does not exist
+   *
+   * @param username - The username to check
+   *
+   * @throws {NotFoundException} If the user does not exist
+   */
+  async throwIfNotExists(username: string): Promise<void> {
+    const user = await this.prisma.user.findUnique({
+      where: { username },
+      select: { username: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException(
+        `Usuario con nombre de usuario ${username} no encontrado`,
+      );
+    }
   }
 
   /**
