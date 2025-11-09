@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col w-full h-[100svh] overflow-hidden">
+  <div class="flex flex-col w-full h-svh overflow-hidden">
     <VSidebarBack routerName="TransferTransaction" />
 
     <div class="flex flex-col flex-1 min-h-0">
