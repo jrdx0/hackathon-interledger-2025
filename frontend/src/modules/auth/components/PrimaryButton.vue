@@ -9,7 +9,7 @@
 <style scoped>
 .btn {
   width: 100%;
-  background: #059669;
+  background: #2e9b85;
   color: white;
   border: none;
   padding: 10px;
@@ -18,6 +18,6 @@
   cursor: pointer;
 }
 .btn:hover {
-  background: #047857;
+  background: #277d6c;
 }
 </style>
