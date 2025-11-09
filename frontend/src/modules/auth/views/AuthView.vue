@@ -15,7 +15,6 @@
       </h3>
       <LoginForm />
     </div>
-
   </AuthLayout>
 </template>
 
